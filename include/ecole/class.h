@@ -1,33 +1,41 @@
 #ifndef CLASSE_H
 #define CLASSE_H
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <vector>
 
-#include "eleve.h"
+#include "ecole/eleve.h"
 
 #define CLASSEMAX 25
 
-
-typedef struct Classe 
+class SchoolClass
 {
-	char nomClasse[3];
-	int nombreEleveClasse;
-	Eleve_t tab[CLASSEMAX];	
-}Classe_t;
+    private:
+        std::string class_name;
+        std::vector<Pupil> pupils;
+
+    public:
+        SchoolClass(const std::string &name);
+        ~SchoolClass();
+
+        const std::string& get_class_name() const;
+
+        Pupil* get_pupil();
+        std::size_t get_pupil_number();
+        void add_pupil(const Pupil &new_pupil);
 
 
-//////////////////Getters ///////////////////////
+};
 
-Eleve_t * getEleve (Classe_t * p_classe , int i);
 
-char * getNomClasse (Classe_t * p_classe);
+
 
 char *  getNomEleve (Classe_t * p_classe, int i);
 
 char *  getTabNom (Classe_t * p_classe, int i);
 
-int getNbEleveClasse (Classe_t * p_classe);
 
 char *  getTabPrenom (Classe_t * p_classe, int i);
 
@@ -40,9 +48,7 @@ int  getTabAnnee (Classe_t * p_classe, int i);
 ///////////////// Setters //////////////////////////
 
 
-void setNomClasse (Classe_t * p_classe, char * ch);
 
-int setNbEleveClasse (Classe_t * p_classe, int i);
 
 void setTabNom (Classe_t * p_classe, int i, char  * ch);
 
@@ -65,8 +71,8 @@ int setTabAnnee (Classe_t * p_classe, int i, int annee);
 void afficherClasse(Classe_t * p_classe);
 
 /* Myriam
- * Fonction qui recherche un élève dont le nom est donné sous la forme d'une chaine de caractère 
- * dans la classe donnée en entrée 
+ * Fonction qui recherche un élève dont le nom est donné sous la forme d'une chaine de caractère
+ * dans la classe donnée en entrée
  * Si elle le trouve elle affiche la fiche de cet élève sinon elle affiche un message comme quoi elle ne l'a pas trouvé */
 int rechercheEleve (Classe_t * p_classe , char *ch);
 
@@ -77,7 +83,7 @@ void lectureFichier (Classe_t * p, char * nomFichier);
 
 /* Myriam
  * Fonction qui récupère un pointeur de classe et un pointeur d'èleve
- * Si le nombre d'èleve max de la classe n'est pas atteint, elle 
+ * Si le nombre d'èleve max de la classe n'est pas atteint, elle
  * ajoute l'èleve à la classe et incrémente le compteur d'effectif de la classe.
  * Sinon elle affiche un message comme quoi la classe est pleine.
  * Dans ce cas l'élève n'est ajouté à aucune classe.

@@ -1,37 +1,35 @@
-#include "classe.h"
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "class.h"
 
 
-//Geteurs et seteurs des classes
-char * getNomClasse (Classe_t * p_classe)
+SchoolClass::SchoolClass(const std::string &name)
 {
-	return p_classe -> nomClasse;
+    class_name = name;
 }
 
-void setNomClasse (Classe_t * p_classe, char * ch)
+~SchoolClass()
 {
-
-	strcpy (p_classe -> nomClasse , ch);
 }
 
-int setNbEleveClasse (Classe_t * p_classe, int i)
+const std::string& SchoolClass::get_class_name() const
 {
-	if (i >=0 || i <= CLASSEMAX)
-	{
-		p_classe -> nombreEleveClasse = i;
-		return 1;
-	}
-	else
-		return 0;
+    return class_name;
 }
 
-int getNbEleveClasse (Classe_t * p_classe)
+Pupil* SchoolClass::get_pupil()
 {
-	return p_classe -> nombreEleveClasse;
+
 }
+
+std::size_t SchoolClass::get_pupil_number()
+{
+    return pupils.size();
+}
+
+void SchoolClass::add_pupil(Pupil new_pupil)
+{
+    pupils.push_back(new_pupil);
+}
+
 
 Eleve_t * getEleve (Classe_t * p_classe , int i)
 {
@@ -59,7 +57,7 @@ void setTabPrenom (Classe_t * p_classe, int i, char  * ch)
 char *  getTabPrenom (Classe_t * p_classe, int i)
 {
 	Eleve_t * p_eleve = getEleve(p_classe, i);
-	return getPrenom(p_eleve);	
+	return getPrenom(p_eleve);
 }
 
 int  getTabJour (Classe_t * p_classe, int i)
@@ -71,13 +69,13 @@ int  getTabJour (Classe_t * p_classe, int i)
 int  getTabMois (Classe_t * p_classe, int i)
 {
 	Eleve_t * p_eleve = getEleve(p_classe, i);
-	return getMois(p_eleve);	
+	return getMois(p_eleve);
 }
 
 int  getTabAnnee (Classe_t * p_classe, int i)
 {
 	Eleve_t * p_eleve = getEleve(p_classe, i);
-	return getAnnee(p_eleve);	
+	return getAnnee(p_eleve);
 }
 
 int setTabJour (Classe_t * p_classe, int i, int jour)
@@ -86,7 +84,7 @@ int setTabJour (Classe_t * p_classe, int i, int jour)
 	{
 		Eleve_t * p_eleve = getEleve(p_classe, i);
 		setJour(p_eleve, jour);
-		return 1;	
+		return 1;
 	}
 	else
 		return 0;
@@ -98,7 +96,7 @@ int setTabMois (Classe_t * p_classe, int i, int mois)
 	{
 		Eleve_t * p_eleve = getEleve(p_classe, i);
 		setMois(p_eleve, mois);
-		return 1;	
+		return 1;
 	}
 	else
 		return 0;
@@ -110,7 +108,7 @@ int setTabAnnee (Classe_t * p_classe, int i, int annee)
 	{
 		Eleve_t * p_eleve = getEleve(p_classe, i);
 		setAnnee(p_eleve, annee);
-		return 1;	
+		return 1;
 	}
 	else
 		return 0;
@@ -121,14 +119,14 @@ void afficherClasse(Classe_t * p_classe)
 {
     int nb = getNbEleveClasse(p_classe);
     int i;
-    
+
 	printf("\n\n------------%s------------ \n\nEffectif : %d\n\n", getNomClasse(p_classe), nb );
-	
+
 	for (i = 0 ; i<nb ; i++)
 	{
-		
+
 			Eleve_t * p_eleve = getEleve(p_classe, i);
-		
+
 			afficherEleve(p_eleve);
 	}
 }
@@ -138,24 +136,24 @@ int rechercheEleve (Classe_t * p_classe , char *ch)
 	int i = 0;
 	int nb = getNbEleveClasse(p_classe);
 	int test = 1;
-	
+
 	while (test != 0 && i < nb)
 	{
 		test = strcmp(ch,getNomEleve(p_classe, i));
-		i++;	
+		i++;
 	}
-	
+
 	if (test == 0)
 	{
 		printf("Eleve trouvé!")	;
 		afficherEleve(getEleve(p_classe, i-1));
-		return 1; 
+		return 1;
 	}
-	else 
+	else
 	{
 		printf("Il n'y a pas d'èleve %s dans la classe de %s\n", ch, getNomClasse(p_classe));
 		return 0;
-	}	
+	}
 }
 
 
@@ -175,15 +173,15 @@ void lectureFichier (Classe_t * p, char * nomFichier)
 void ajouterEleve(Classe_t * p_classe, Eleve_t * p_eleve)
 {
 	int nb = getNbEleveClasse(p_classe);
-	
+
 	if (nb<CLASSEMAX)
-	{	
+	{
 		p_classe->tab[nb] = * p_eleve;
-		
+
 		nb++;
-		
+
 		setNbEleveClasse(p_classe, nb);
-		
+
 		afficherClasse(p_classe);
 	}
 	else
@@ -200,20 +198,20 @@ void test (void)
 	char ch1[20] = "jean";
 	Eleve_t eleve1;
 	Eleve_t *p;
-	
+
 	p = &eleve1;
 	setNom(p, ch);
 	setPrenom(p, ch1);
 	eleve1.jourNaissance = 13;
 	eleve1.moisNaissance = 11;
 	eleve1.anneeNaissance = 2016;
-	
+
 	//Création eleve2 pour test
 	char ch4[20] = "dupond";
 	char ch3[20] = "pierre";
 	Eleve_t eleve2;
 	Eleve_t *p2;
-	
+
 	p2 = &eleve2;
 	setNom(p2, ch4);
 	setPrenom(p2, ch3);
@@ -226,7 +224,7 @@ void test (void)
 	Classe_t *p1;
 		p1 = &classe1;
 
-	//saisieClasse(p1);	
+	//saisieClasse(p1);
 
 	//Test setNom Classe
 	char ch2[3] = "CE1";
@@ -237,8 +235,8 @@ void test (void)
 	setNbEleveClasse(p1,1);
 	printf("%d\n", getNbEleveClasse(p1));
 
-	
-	/*Test setTabPrenom 
+
+	/*Test setTabPrenom
 	char ch1[20] = "eric";
 	setTabPrenom(p1, 0, ch1);
 
@@ -261,7 +259,7 @@ void test (void)
 	eleve3.anneeNaissance = 2016;
 
 	ajouterEleve(p1, p6);
-	
+
 	afficherClasse(p1);
 }
 
